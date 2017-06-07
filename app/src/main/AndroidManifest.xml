@@ -77,6 +77,21 @@
                 android:resource="@xml/livewallpaper" />
         </service>
 
+        <service
+            android:name="com.martinrgb.livewallpapertemplate.FrameWallpaper"
+            android:label="MultiLWP(Frame)"
+            android:permission="android.permission.BIND_WALLPAPER"
+            android:process=":wallpaper">
+            <!-- 为实时壁纸配置intent-filter -->
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+            </intent-filter>
+            <!-- 为实时壁纸配置meta-data -->
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/livewallpaper" />
+        </service>
+
     </application>
 
     <uses-feature android:name="android.hardware.camera"/>

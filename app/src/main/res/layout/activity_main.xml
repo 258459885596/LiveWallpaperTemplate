@@ -11,19 +11,11 @@
               android:paddingTop="@dimen/activity_vertical_margin"
               tools:context="com.martinrgb.livewallpapertemplate.MainActivity">
 
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="setVideoToWallPaper"
         android:text="视频作为壁纸" />
-
-    <CheckBox
-        android:id="@+id/id_cb_voice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="是否静音" />
 
     <Button
         android:layout_width="wrap_content"
@@ -43,5 +35,11 @@
         android:onClick="setShaderToWallPaper"
         android:text="着色器作为壁纸" />
 
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="setFrameToWallPaper"
+        android:text="序列帧作为壁纸" />
 
 </LinearLayout>

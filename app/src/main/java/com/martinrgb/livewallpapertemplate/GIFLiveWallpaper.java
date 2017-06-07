@@ -18,10 +18,13 @@ import java.io.IOException;
  */
 public class GIFLiveWallpaper extends WallpaperService {
 
+    //###################### Setting ######################
+    private static String GIFNAME = "testgif.gif";
+
     public Engine onCreateEngine() {
         try {
             Movie movie = Movie.decodeStream(
-                    getResources().getAssets().open("girl.gif"));
+                    getResources().getAssets().open(GIFNAME));
 
             return new GIFWallpaperEngine(movie);
         }catch(IOException e){

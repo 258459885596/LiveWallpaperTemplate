@@ -1,33 +1,22 @@
 package com.martinrgb.livewallpapertemplate;
 
 import android.app.ActivityManager;
-import android.app.KeyguardManager;
 import android.app.WallpaperManager;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ConfigurationInfo;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
+import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
-import android.os.Handler;
+import android.os.Bundle;
 import android.service.wallpaper.WallpaperService;
-import android.util.FloatMath;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import com.martinrgb.livewallpapertemplate.VideoLiveWallpaper;
-import com.martinrgb.livewallpapertemplate.programs.ShaderRenderer;
+import com.martinrgb.livewallpapertemplate.shaderprograms.ShaderRenderer;
 
 
 /**
@@ -36,11 +25,17 @@ import com.martinrgb.livewallpapertemplate.programs.ShaderRenderer;
 
 public class ShaderWallpaper extends WallpaperService {
 
+    //###################### Setting ######################
+    private String VERTEXNAME = "testvert.glsl";
+    private String FRAGNAME = "testfrag.glsl";
 
     private static final String TAG = "GLEngine";
     private ShaderRenderer mCanvasRenderer;
     private GLEngine.WallpaperGLSurfaceView glSurfaceView;
     private boolean rendererSet;
+    private AssetManager mAssetManager;
+
+
 
     @Override
     public Engine onCreateEngine(){
@@ -90,7 +85,7 @@ public class ShaderWallpaper extends WallpaperService {
                             || Build.MODEL.contains("Emulator")
                             || Build.MODEL.contains("Android SDK built for x86")));
 
-            mCanvasRenderer = new ShaderRenderer(ShaderWallpaper.this);
+            mCanvasRenderer = new ShaderRenderer(ShaderWallpaper.this,VERTEXNAME,FRAGNAME);
 
 
 
@@ -112,6 +107,7 @@ public class ShaderWallpaper extends WallpaperService {
 
 
         }
+
 
 
         //#Destory
@@ -145,6 +141,10 @@ public class ShaderWallpaper extends WallpaperService {
                 }
             }
         }
+
+
+
+
         //###################Touch Event###################
         @Override
         public void onTouchEvent(MotionEvent event){
@@ -208,6 +208,7 @@ public class ShaderWallpaper extends WallpaperService {
                 Log.d(TAG, "getHolder(): returning " + getSurfaceHolder());
                 return getSurfaceHolder();
             }
+
             public void onWallpaperDestroy() {
                 Log.d(TAG, "onWallpaperDestroy()");
                 super.onDetachedFromWindow();

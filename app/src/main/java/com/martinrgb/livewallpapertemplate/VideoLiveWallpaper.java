@@ -13,19 +13,20 @@ import android.service.wallpaper.WallpaperService;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
-import com.martinrgb.livewallpapertemplate.util.SimpleL;
 /**
  * thx for https://github.com/songixan/Wallpaper
  */
 public class VideoLiveWallpaper extends WallpaperService {
 
+    //###################### Setting ######################
+    private static String VIDEONAME = "testvideo.mp4";
 
     public Engine onCreateEngine() {
         return new VideoWallpaperEngine();
 
     }
 
-    public static final String VIDEO_PARAMS_CONTROL_ACTION = "com.zhy.livewallpaper";
+    public static final String VIDEO_PARAMS_CONTROL_ACTION = "com.martinrgb.livewallpapertemplate";
     public static final String KEY_ACTION = "action";
     public static final int ACTION_VOICE_SILENCE = 110;
     public static final int ACTION_VOICE_NORMAL = 111;
@@ -49,13 +50,11 @@ public class VideoLiveWallpaper extends WallpaperService {
         @Override
         public void onCreate(SurfaceHolder surfaceHolder) {
             super.onCreate(surfaceHolder);
-            SimpleL.d("VideoEngine#onCreate");
 
             IntentFilter intentFilter = new IntentFilter(VIDEO_PARAMS_CONTROL_ACTION);
             registerReceiver(mVideoParamsControlReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
-                    SimpleL.d("onReceive");
                     int action = intent.getIntExtra(KEY_ACTION, -1);
 
                     switch (action) {
@@ -75,7 +74,6 @@ public class VideoLiveWallpaper extends WallpaperService {
 
         @Override
         public void onDestroy() {
-            SimpleL.d("VideoEngine#onDestroy");
             unregisterReceiver(mVideoParamsControlReceiver);
             super.onDestroy();
 
@@ -83,7 +81,6 @@ public class VideoLiveWallpaper extends WallpaperService {
 
         @Override
         public void onVisibilityChanged(boolean visible) {
-            SimpleL.d("VideoEngine#onVisibilityChanged visible = " + visible);
             if (visible) {
                 mMediaPlayer.start();
             } else {
@@ -94,13 +91,12 @@ public class VideoLiveWallpaper extends WallpaperService {
 
         @Override
         public void onSurfaceCreated(SurfaceHolder holder) {
-            SimpleL.d("VideoEngine#onSurfaceCreated ");
             super.onSurfaceCreated(holder);
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setSurface(holder.getSurface());
             try {
                 AssetManager assetMg = getApplicationContext().getAssets();
-                AssetFileDescriptor fileDescriptor = assetMg.openFd("test1.mp4");
+                AssetFileDescriptor fileDescriptor = assetMg.openFd(VIDEONAME);
                 mMediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(),
                         fileDescriptor.getStartOffset(), fileDescriptor.getLength());
                 mMediaPlayer.setLooping(true);
@@ -116,13 +112,11 @@ public class VideoLiveWallpaper extends WallpaperService {
 
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-            SimpleL.d("VideoEngine#onSurfaceChanged ");
             super.onSurfaceChanged(holder, format, width, height);
         }
 
         @Override
         public void onSurfaceDestroyed(SurfaceHolder holder) {
-            SimpleL.d("VideoEngine#onSurfaceDestroyed ");
             super.onSurfaceDestroyed(holder);
             mMediaPlayer.release();
             mMediaPlayer = null;
