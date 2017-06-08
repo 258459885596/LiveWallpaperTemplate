@@ -1,31 +1,19 @@
 package com.martinrgb.livewallpapertemplate;
 
-import android.app.ActivityManager;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ConfigurationInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
-import android.opengl.GLSurfaceView;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.SystemClock;
 import android.service.wallpaper.WallpaperService;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 
 import com.facebook.rebound.SimpleSpringListener;
@@ -43,7 +31,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.logging.Handler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,13 +44,14 @@ public class FrameWallpaper extends WallpaperService {
 
     //###################### Setting ######################
 
-    private static final int MIN_UPDATE_RATE = 8;
-    private int mCurFrame = 0;
-    private static final String FRAME_NAME = "testframe";
-    private boolean isOneShot = false;
+    public static final int MIN_UPDATE_RATE = 8;
+    public int mCurFrame = 0;
+    public static final String FRAME_NAME = "testframe";
+    public boolean isOneShot = false;
     public boolean isControl = false;
-    private int frameNumber = 80;
-    public int mControlFrame = 0; //可以用Spring，结合滑动位置控制
+    public int frameNumber = 80;
+
+    private int mControlFrame = 0; //可以用Spring，结合滑动位置控制
 
 
     //###################### Listener ######################

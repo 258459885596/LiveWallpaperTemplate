@@ -3,8 +3,32 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="com.example.martinrgb.livewallpapertemplate.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/video_setting"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/video_setting"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/gif_setting"
+        android:orderInCategory="200"
+        android:title="@string/gif_setting"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/vert_setting"
+        android:orderInCategory="300"
+        android:title="@string/vert_setting"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/frag_setting"
+        android:orderInCategory="400"
+        android:title="@string/frag_setting"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/frame_setting"
+        android:orderInCategory="500"
+        android:title="@string/frame_setting"
         app:showAsAction="never"/>
 </menu>

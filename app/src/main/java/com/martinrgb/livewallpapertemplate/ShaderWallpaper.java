@@ -6,12 +6,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ConfigurationInfo;
-import android.content.res.AssetManager;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
-import android.os.Bundle;
 import android.service.wallpaper.WallpaperService;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -26,16 +23,8 @@ import com.martinrgb.livewallpapertemplate.shaderprograms.ShaderRenderer;
 public class ShaderWallpaper extends WallpaperService {
 
     //###################### Setting ######################
-    private String VERTEXNAME = "testvert.glsl";
-    private String FRAGNAME = "testfrag.glsl";
-
-    private static final String TAG = "GLEngine";
-    private ShaderRenderer mCanvasRenderer;
-    private GLEngine.WallpaperGLSurfaceView glSurfaceView;
-    private boolean rendererSet;
-    private AssetManager mAssetManager;
-
-
+    public String VERTEXNAME = "testvert.glsl";
+    public String FRAGNAME = "testfrag.glsl";
 
     @Override
     public Engine onCreateEngine(){
