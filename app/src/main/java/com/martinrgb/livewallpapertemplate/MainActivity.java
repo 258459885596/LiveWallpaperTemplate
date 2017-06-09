@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 videoPath = result.getPath();
                 videoName = stringBuilder.toString();
 
-                VideoLiveWallpaper.setToWallPaper(getApplicationContext());
+                VideoLiveWallpaper.setToWallPaper(this);
             }
         }
         else if (requestCode == GIF_FILE_PICKER_RESULT) {
@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                 gifPath = result.getPath();
                 gifName = stringBuilder.toString();
 
-                GIFLiveWallpaper.setToWallPaper(getApplicationContext());
+                GIFLiveWallpaper.setToWallPaper(this);
             }
 
 
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                 vertPath = result.getPath();
                 vertName = stringBuilder.toString();
 
-                ShaderWallpaper.setToWallPaper(getApplicationContext());
+                ShaderWallpaper.setToWallPaper(this);
             }
         }
         else if (requestCode == FRAG_FILE_PICKER_RESULT) {
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
                 fragPath = result.getPath();
                 fragName = stringBuilder.toString();
 
-                ShaderWallpaper.setToWallPaper(getApplicationContext());
+                ShaderWallpaper.setToWallPaper(this);
             }
         }
 
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                 frameName = stringBuilder.toString();
                 framePath = result.getPath() + frameName;
 
-                FrameWallpaper.setToWallPaper(getApplicationContext());
+                FrameWallpaper.setToWallPaper(this);
 
                 Log.e("PATH",framePath);
                 Log.e("NAME",frameName);
