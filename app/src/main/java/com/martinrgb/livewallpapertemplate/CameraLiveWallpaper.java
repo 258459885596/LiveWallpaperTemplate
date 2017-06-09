@@ -10,11 +10,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 
+import java.io.IOException;
 import java.util.List;
-
-/**
- * Created by liumeng on 2017/5/12.
- */
 
 public class CameraLiveWallpaper extends WallpaperService {
 
@@ -25,6 +22,13 @@ public class CameraLiveWallpaper extends WallpaperService {
     }
 
     public static void setToWallPaper(Context context) {
+
+        try {
+            WallpaperManager.getInstance(context).clear();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
         final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
         intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                 new ComponentName(context, CameraLiveWallpaper.class));

@@ -4,12 +4,9 @@ import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Movie;
-import android.os.Environment;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.service.wallpaper.WallpaperService;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -22,25 +19,36 @@ import java.io.InputStream;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * thx for https://github.com/songixan/Wallpaper
- */
 public class GIFLiveWallpaper extends WallpaperService {
 
     //###################### Setting ######################
     private static String LOCAL_GIF = "testgif.gif";
 
     public Engine onCreateEngine() {
+
         return new GIFWallpaperEngine();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     public static void setToWallPaper(Context context) {
+
+        try {
+            WallpaperManager.getInstance(context).clear();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
         final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
         intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                 new ComponentName(context, GIFLiveWallpaper.class));
         intent.putExtra("SET_LOCKSCREEN_WALLPAPER", true);
         context.startActivity(intent);
     }
+
 
 
     private class GIFWallpaperEngine extends WallpaperService.Engine {

@@ -15,16 +15,6 @@ import android.view.View;
 import ru.bartwell.exfilepicker.ExFilePicker;
 import ru.bartwell.exfilepicker.data.ExFilePickerResult;
 
-import com.martinrgb.livewallpapertemplate.R;
-
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import static android.content.ContentValues.TAG;
-
 
 //两个进程这个设计原理 - android:process,后期还是保留，
 // 然后重新写跨进程访问的方案，用静态变量肯定是不合适了，
@@ -53,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
         mExFilePicker = new ExFilePicker();
         mExFilePicker.setCanChooseOnlyOneItem(true);
         mExFilePicker.setQuitButtonEnabled(true);
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     public void setVideoToWallPaper(View view) {
@@ -115,60 +111,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == VIDEO_FILE_PICKER_RESULT) {
-            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-                if (result != null && result.getCount() > 0) {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(result.getNames().get(0));
-                videoPath = result.getPath();
-                videoName = stringBuilder.toString();
-            }
-        }
-        else if (requestCode == GIF_FILE_PICKER_RESULT) {
-            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            if (result != null && result.getCount() > 0) {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(result.getNames().get(0));
-                gifPath = result.getPath();
-                gifName = stringBuilder.toString();
-            }
-
-
-        }
-        else if (requestCode == VERT_FILE_PICKER_RESULT) {
-            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            if (result != null && result.getCount() > 0) {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(result.getNames().get(0));
-                vertPath = result.getPath();
-                vertName = stringBuilder.toString();
-            }
-        }
-        else if (requestCode == FRAG_FILE_PICKER_RESULT) {
-            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            if (result != null && result.getCount() > 0) {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(result.getNames().get(0));
-                fragPath = result.getPath();
-                fragName = stringBuilder.toString();
-            }
-        }
-
-        else if (requestCode == FRAME_FOLDER_PICKER_RESULT) {
-            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            if (result != null && result.getCount() > 0) {
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.append(result.getNames().get(0));
-                frameName = stringBuilder.toString();
-                framePath = result.getPath() + frameName;
-
-                Log.e("PATH",framePath);
-                Log.e("NAME",frameName);
-            }
-        }
-    }
 
     public static String gifPath;
     public static String gifName;
@@ -184,4 +126,109 @@ public class MainActivity extends AppCompatActivity {
     public static String framePath;
     public static String frameName;
 
-}
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == VIDEO_FILE_PICKER_RESULT) {
+            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
+                if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                videoPath = result.getPath();
+                videoName = stringBuilder.toString();
+
+                VideoLiveWallpaper.setToWallPaper(getApplicationContext());
+            }
+        }
+        else if (requestCode == GIF_FILE_PICKER_RESULT) {
+            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
+            if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                gifPath = result.getPath();
+                gifName = stringBuilder.toString();
+
+                GIFLiveWallpaper.setToWallPaper(getApplicationContext());
+            }
+
+
+        }
+        else if (requestCode == VERT_FILE_PICKER_RESULT) {
+            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
+            if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                vertPath = result.getPath();
+                vertName = stringBuilder.toString();
+
+                ShaderWallpaper.setToWallPaper(getApplicationContext());
+            }
+        }
+        else if (requestCode == FRAG_FILE_PICKER_RESULT) {
+            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
+            if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                fragPath = result.getPath();
+                fragName = stringBuilder.toString();
+
+                ShaderWallpaper.setToWallPaper(getApplicationContext());
+            }
+        }
+
+        else if (requestCode == FRAME_FOLDER_PICKER_RESULT) {
+            ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
+            if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                frameName = stringBuilder.toString();
+                framePath = result.getPath() + frameName;
+
+                FrameWallpaper.setToWallPaper(getApplicationContext());
+
+                Log.e("PATH",framePath);
+                Log.e("NAME",frameName);
+            }
+        }
+    }
+
+
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putString("mGIFPath",gifPath);
+//        outState.putString("mGIFName",gifName);
+//
+//        outState.putString("mVideoPath",videoPath);
+//        outState.putString("mVideoName",videoName);
+//
+//        outState.putString("mVertPath",vertPath);
+//        outState.putString("mVertName",vertName);
+//        outState.putString("mFragPath",fragPath);
+//        outState.putString("mFragName",fragName);
+//
+//        outState.putString("mFramePath",framePath);
+//        outState.putString("mFrameName",frameName);
+//
+//
+//    }
+//
+//    @Override
+//    public void onRestoreInstanceState(Bundle savedInstanceState) {
+//        super.onRestoreInstanceState(savedInstanceState);
+//
+//        gifPath = savedInstanceState.getString("mGIFPath");
+//        gifName = savedInstanceState.getString("mGIFName");
+//
+//        videoPath = savedInstanceState.getString("mVideoPath");
+//        videoName = savedInstanceState.getString("mVideoName");
+//
+//        vertPath = savedInstanceState.getString("mVertPath");
+//        vertName = savedInstanceState.getString("mVertName");
+//        fragPath = savedInstanceState.getString("mFragPath");
+//        fragName = savedInstanceState.getString("mFragName");
+//
+//        framePath = savedInstanceState.getString("mFramePath");
+//        frameName = savedInstanceState.getString("mFrameName");
+//    }
+
+    }

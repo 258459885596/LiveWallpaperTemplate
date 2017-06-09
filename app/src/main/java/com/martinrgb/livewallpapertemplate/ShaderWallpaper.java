@@ -42,6 +42,13 @@ public class ShaderWallpaper extends WallpaperService {
 
 
     public static void setToWallPaper(Context context) {
+
+        try {
+            WallpaperManager.getInstance(context).clear();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
         final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
         intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                 new ComponentName(context, ShaderWallpaper.class));

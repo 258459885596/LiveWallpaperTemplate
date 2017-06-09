@@ -7,15 +7,10 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
-import android.os.Environment;
 import android.service.wallpaper.WallpaperService;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
-/**
- * thx for https://github.com/songixan/Wallpaper
- */
 public class VideoLiveWallpaper extends WallpaperService {
 
     //###################### Setting ######################
@@ -26,6 +21,13 @@ public class VideoLiveWallpaper extends WallpaperService {
     }
 
     public static void setToWallPaper(Context context) {
+
+        try {
+            WallpaperManager.getInstance(context).clear();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
         final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
         intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                 new ComponentName(context, VideoLiveWallpaper.class));

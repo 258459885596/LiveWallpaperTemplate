@@ -45,6 +45,17 @@
                 android:resource="@xml/livewallpaper" />
         </service>
 
+        <receiver
+            android:name=".RestarterBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="com.martinrgb.livewallpapertemplate.Restart"/>
+            </intent-filter>
+        </receiver>
+
+
         <service
             android:name="com.martinrgb.livewallpapertemplate.CameraLiveWallpaper"
             android:label="MultiLWP(Cam)"
@@ -98,5 +109,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
 
 </manifest>
