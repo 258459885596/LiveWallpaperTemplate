@@ -14,11 +14,11 @@ import java.io.InputStreamReader;
 
 public class TextResourceReader {
 
-    public static String readTextFileFromResource(Context context, String fileName){
+    public static String readTextFileFromResource(Context context, InputStream inputStream){
         StringBuilder body = new StringBuilder();
 
         try{
-            InputStream inputStream = context.getResources().getAssets().open(fileName);
+//            InputStream inputStream = context.getResources().getAssets().open(fileName);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
@@ -29,9 +29,9 @@ public class TextResourceReader {
                 body.append('\n');
             }
         } catch (IOException e){
-            throw new RuntimeException("Could not open resource:" + fileName,e);
+            throw new RuntimeException("Could not open resource:" ,e);
         } catch (Resources.NotFoundException nfe){
-            throw new RuntimeException("Resource not found:" + fileName,nfe);
+            throw new RuntimeException("Resource not found:" ,nfe);
         }
 
         return body.toString();

@@ -1,33 +1,46 @@
-
-#ifdef GL_ES
+#ifdef GL_FRAGMENT_PRECISION_HIGH
 precision highp float;
+#else
+precision mediump float;
 #endif
 
-uniform vec2 u_resolution;
-uniform vec2 u_mouse;
 uniform float u_time;
-//1
-mat2 m(float a){float c=cos(a), s=sin(a);return mat2(c,-s,s,c);}
-float map(vec3 p){
-    p.xz*= m(u_time*0.4/8.);p.xy*= m(u_time*0.3/8.);
-    vec3 q = p*2.+u_time/4. ;
-    return length(p+vec3(sin(u_time*0.7/8.)))*log(length(p)+1.) + sin(q.x+sin(q.z+sin(q.y)))*0.5 - 0.75;
-}
+uniform vec2 u_resolution;
+uniform vec2 u_offset;
+//uniform sampler2D u_backbuffer;
 
-void main() {
-	//vec2 st = gl_FragCoord.xy/u_resolution;
-	//gl_FragColor = vec4(st.x,st.y,0.0,1.0);
+void main()
+{
+	float mx = max( u_resolution.x, u_resolution.y );
+	vec2 uv = (gl_FragCoord.xy - u_resolution.xy*0.5)/mx;
 
-   vec2 p = gl_FragCoord.xy/u_resolution.y - vec2(0.5-u_mouse.x/2.,0.75+u_mouse.y/2.); // vec2(.5,0.75)
-    vec3 cl = vec3(0.);
-    float d = 2.5;
-    for(int i=0; i<=5; i++)	{
-		vec3 p = vec3(0,0,5.+u_mouse/2.+u_mouse.y/2.) + normalize(vec3(p, -2.))*d;
-        float rz = map(p);
-		float f =  clamp((rz - map(p+.1))*0.5, -.1, 1. );
-        vec3 l = vec3(0.1,0.3,.4) + vec3(5., 2.5, 3.)*f;
-        cl = cl*l + (1.-smoothstep(0., 2.5, rz))*0.8*l;
-		d += min(rz, 5.+u_mouse.x*2.);
-	}
-    gl_FragColor = vec4(cl, 1.);
+	uv += u_offset*0.3;
+
+	float r = 0.7;
+	uv *= mat2(
+		r, -r,
+		r, r );
+
+	float y = uv.y*mx*0.05 + u_time;
+	float f = fract( y );
+	f = (max( 0.4, min( f, 1.0 - f ) ) - 0.4)*10.0;
+
+	vec3 color =
+		vec3(
+			mod( y, 6.0 )*f,
+			mod( y, 2.0 )*f,
+			mod( y, 0.9 )*f )*
+		abs( sin( mod(
+			30.0 + uv.x,
+			uv.y + 1.0 ) ) );
+//
+//	color = mix(
+//		texture2D(
+//			u_backbuffer,
+//			gl_FragCoord.xy/mx ).rgb,
+//		color,
+//		0.5 );
+
+	gl_FragColor = vec4( color, 1.0 );
 }
+	

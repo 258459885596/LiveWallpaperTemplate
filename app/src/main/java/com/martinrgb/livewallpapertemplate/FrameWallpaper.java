@@ -24,6 +24,7 @@ import com.facebook.rebound.SpringUtil;
 import com.martinrgb.livewallpapertemplate.frameutil.FrameDrawable;
 import com.martinrgb.livewallpapertemplate.frameutil.UpdateThread;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +47,8 @@ public class FrameWallpaper extends WallpaperService {
 
     public static final int MIN_UPDATE_RATE = 8;
     public int mCurFrame = 0;
-    public static final String FRAME_NAME = "testframe";
+    private String LOCAL_FRAME_NAME = "testframe";
+    private String FRAME_NAME;
     public boolean isOneShot = false;
     public boolean isControl = false;
     public int frameNumber = 80;
@@ -101,6 +103,7 @@ public class FrameWallpaper extends WallpaperService {
         public void onCreate(SurfaceHolder surfaceHolder) {
             super.onCreate(surfaceHolder);
             Log.d(TAG, "onCreate(" + surfaceHolder + ")");
+
 
         }
 
@@ -230,15 +233,42 @@ public class FrameWallpaper extends WallpaperService {
 
 
         private void addAsset(Context context){
-            List<String> frameList = null;
+            List<String> frameList = new ArrayList<String>();
             try {
-                final String[] frames = context.getAssets().list(FRAME_NAME);
-                if (null != frames) {
-                    frameList = Arrays.asList(frames);
+
+
+                if(MainActivity.frameName == null){
+                    FRAME_NAME = LOCAL_FRAME_NAME;
+                    final String[] frames = context.getAssets().list(FRAME_NAME);
+
+                    if (null != frames) {
+                        frameList = Arrays.asList(frames);
+                    }
+
                 }
+                else {
+                    FRAME_NAME = MainActivity.frameName;
+                    String path = MainActivity.framePath;
+                    File directory = new File(path);
+                    File[] files = directory.listFiles();
+
+                    for (int i = 0; i < files.length; i++) {
+//
+                        if(i==0){
+                            FRAME_NAME = getFileNameNoEx(files[0].getName());
+                            Log.e("dsaffasddfsafdas",FRAME_NAME);
+                        }
+
+                        if (files[i].isFile()) {
+                           frameList.add(files[i].getName());
+                        }
+                    }
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             //按帧图片的序列号排序
             if (null != frameList) {
                 Collections.sort(frameList, new Comparator<String>() {
@@ -264,10 +294,22 @@ public class FrameWallpaper extends WallpaperService {
                 });
                 //添加序列帧
                 List<FrameDrawable> frameDrawables = new ArrayList<>();
-                for (String framePath : frameList) {
-                    FrameDrawable frameDrawable = new FrameDrawable(FRAME_NAME + "/" + framePath, 8,context);
-                    frameDrawables.add(frameDrawable);
 
+                if(MainActivity.frameName == null){
+
+                    for (String framePath : frameList) {
+                        FrameDrawable frameDrawable = new FrameDrawable(FRAME_NAME + "/" + framePath, 8,context);
+                        frameDrawables.add(frameDrawable);
+
+                    }
+                }
+                else {
+
+                    for (String framePath : frameList) {
+                        FrameDrawable frameDrawable = new FrameDrawable(framePath, 8,context);
+                        frameDrawables.add(frameDrawable);
+
+                    }
                 }
 
                 addFrameDrawable(frameDrawables); //添加序列帧
@@ -282,6 +324,17 @@ public class FrameWallpaper extends WallpaperService {
             }
         }
 
+        //去掉扩展名后，再去一位
+        public String getFileNameNoEx(String filename) {
+            if ((filename != null) && (filename.length() > 0)) {
+                int dash = filename.lastIndexOf('_');
+                if ((dash >-1) && (dash < (filename.length()))) {
+                    return filename.substring(0, dash);
+                }
+            }
+
+            return filename;
+        }
 
         //### Animating Or Not
         private AtomicBoolean mIsAnimating = new AtomicBoolean(false);

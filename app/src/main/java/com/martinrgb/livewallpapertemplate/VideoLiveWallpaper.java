@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Environment;
 import android.service.wallpaper.WallpaperService;
 import android.view.SurfaceHolder;
 
@@ -17,7 +19,7 @@ import java.io.IOException;
 public class VideoLiveWallpaper extends WallpaperService {
 
     //###################### Setting ######################
-    public String VIDEONAME = "testvideo.mp4";
+    public String LOCAL_VIDEO = "testvideo.mp4";
 
     public Engine onCreateEngine() {
         return new VideoWallpaperEngine();
@@ -65,10 +67,17 @@ public class VideoLiveWallpaper extends WallpaperService {
             mMediaPlayer = new MediaPlayer();
             mMediaPlayer.setSurface(holder.getSurface());
             try {
-                AssetManager assetMg = getApplicationContext().getAssets();
-                AssetFileDescriptor fileDescriptor = assetMg.openFd(VIDEONAME);
-                mMediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(),
-                        fileDescriptor.getStartOffset(), fileDescriptor.getLength());
+                if(MainActivity.videoName == null){
+                    AssetManager assetMg = getApplicationContext().getAssets();
+                    AssetFileDescriptor fileDescriptor = assetMg.openFd(LOCAL_VIDEO);
+                    mMediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(),
+                            fileDescriptor.getStartOffset(), fileDescriptor.getLength());
+                }
+                else {
+                    String filePath = MainActivity.videoPath+MainActivity.videoName;
+                    mMediaPlayer.setDataSource(filePath);
+                }
+
                 mMediaPlayer.setLooping(true);
                 mMediaPlayer.setVolume(0, 0);
                 mMediaPlayer.prepare();

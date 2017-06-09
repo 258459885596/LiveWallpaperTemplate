@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,18 @@ import ru.bartwell.exfilepicker.data.ExFilePickerResult;
 
 import com.martinrgb.livewallpapertemplate.R;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static android.content.ContentValues.TAG;
+
+
+//两个进程这个设计原理 - android:process,后期还是保留，
+// 然后重新写跨进程访问的方案，用静态变量肯定是不合适了，
+// 把GIFNAME相关逻辑从activity提取出来，封装到一个专门的业务类，然后这个业务类搞成单例的
 
 public class MainActivity extends AppCompatActivity {
 
@@ -106,40 +119,69 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == VIDEO_FILE_PICKER_RESULT) {
             ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(result.getNames().get(0));
+                if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                videoPath = result.getPath();
+                videoName = stringBuilder.toString();
+            }
         }
         else if (requestCode == GIF_FILE_PICKER_RESULT) {
             ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(result.getNames().get(0));
-            MainActivity.setGIF(stringBuilder.toString());
+            if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                gifPath = result.getPath();
+                gifName = stringBuilder.toString();
+            }
+
+
         }
         else if (requestCode == VERT_FILE_PICKER_RESULT) {
             ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(result.getNames().get(0));
+            if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                vertPath = result.getPath();
+                vertName = stringBuilder.toString();
+            }
         }
         else if (requestCode == FRAG_FILE_PICKER_RESULT) {
             ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(result.getNames().get(0));
+            if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                fragPath = result.getPath();
+                fragName = stringBuilder.toString();
+            }
         }
 
         else if (requestCode == FRAME_FOLDER_PICKER_RESULT) {
             ExFilePickerResult result = ExFilePickerResult.getFromIntent(data);
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(result.getNames().get(0));
+            if (result != null && result.getCount() > 0) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(result.getNames().get(0));
+                frameName = stringBuilder.toString();
+                framePath = result.getPath() + frameName;
+
+                Log.e("PATH",framePath);
+                Log.e("NAME",frameName);
+            }
         }
     }
 
-    private static String gifName ="testgif.gif";
-    public static void setGIF(String string)
-    {
-        gifName = string;
-    }
-    public static String getGIF()
-    {
-        return gifName;
-    }
+    public static String gifPath;
+    public static String gifName;
+
+    public static String videoPath;
+    public static String videoName;
+
+    public static String vertPath;
+    public static String vertName;
+    public static String fragPath;
+    public static String fragName;
+
+    public static String framePath;
+    public static String frameName;
+
 }

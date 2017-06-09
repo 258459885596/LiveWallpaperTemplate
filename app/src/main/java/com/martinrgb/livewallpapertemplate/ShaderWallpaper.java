@@ -15,6 +15,12 @@ import android.view.SurfaceHolder;
 
 import com.martinrgb.livewallpapertemplate.shaderprograms.ShaderRenderer;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 
 /**
  * Created by MartinRGB on 2017/2/21.
@@ -23,8 +29,11 @@ import com.martinrgb.livewallpapertemplate.shaderprograms.ShaderRenderer;
 public class ShaderWallpaper extends WallpaperService {
 
     //###################### Setting ######################
-    public String VERTEXNAME = "testvert.glsl";
-    public String FRAGNAME = "testfrag.glsl";
+    private String LOCAL_VERT = "testvert.glsl";
+    private String LOCAL_FRAG = "testfrag.glsl";
+
+    private InputStream finalVert;
+    private InputStream finalFrag;
 
     @Override
     public Engine onCreateEngine(){
@@ -74,7 +83,53 @@ public class ShaderWallpaper extends WallpaperService {
                             || Build.MODEL.contains("Emulator")
                             || Build.MODEL.contains("Android SDK built for x86")));
 
-            mCanvasRenderer = new ShaderRenderer(ShaderWallpaper.this,VERTEXNAME,FRAGNAME);
+            try {
+
+                if(MainActivity.vertName == null){
+
+                    InputStream mInputStream = getApplicationContext().getResources().getAssets().open(LOCAL_VERT);
+                    finalVert = mInputStream;
+                }
+                else {
+                    File shaderFile =  new File(MainActivity.vertPath, MainActivity.vertName);
+                    final int readLimit = 16 * 1024;
+                    if(shaderFile != null){
+                        InputStream mInputStream =  new BufferedInputStream(new FileInputStream(shaderFile), readLimit);
+                        mInputStream.mark(readLimit);
+                        finalVert = mInputStream;
+                        Log.w(TAG, "GIF image is not available!");
+                    }
+                }
+
+            }catch(IOException e){
+                Log.d("GIF", "Could not load vert");
+            }
+
+            try {
+
+                if(MainActivity.fragName == null){
+
+                    InputStream mInputStream = getApplicationContext().getResources().getAssets().open(LOCAL_FRAG);
+                    finalFrag = mInputStream;
+                }
+                else {
+                    File shaderFile =  new File(MainActivity.fragPath, MainActivity.fragName);
+                    final int readLimit = 16 * 1024;
+                    if(shaderFile != null){
+                        InputStream mInputStream =  new BufferedInputStream(new FileInputStream(shaderFile), readLimit);
+                        mInputStream.mark(readLimit);
+                        finalFrag = mInputStream;
+                        Log.w(TAG, "GIF image is not available!");
+                    }
+                }
+
+            }catch(IOException e){
+                Log.d("GIF", "Could not load vert");
+            }
+
+
+
+            mCanvasRenderer = new ShaderRenderer(ShaderWallpaper.this,finalVert,finalFrag);
 
 
 
@@ -180,6 +235,19 @@ public class ShaderWallpaper extends WallpaperService {
             }
 
 
+        }
+
+        private float mXOffset;
+        private float mYOffset;
+
+        @Override
+        public void onOffsetsChanged(
+                float xOffset,
+                float yOffset,
+                float xStep,
+                float yStep,
+                int xPixels,
+                int yPixels) {
         }
 
 

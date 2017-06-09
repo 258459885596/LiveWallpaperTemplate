@@ -1,6 +1,7 @@
 package com.martinrgb.livewallpapertemplate.shaderprograms;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.opengl.GLES20;
 
 import com.martinrgb.livewallpapertemplate.MainActivity;
@@ -8,7 +9,9 @@ import com.martinrgb.livewallpapertemplate.R;
 import com.martinrgb.livewallpapertemplate.shaderutil.Constants;
 import com.martinrgb.livewallpapertemplate.shaderutil.ShaderHelper;
 import com.martinrgb.livewallpapertemplate.shaderutil.TextResourceReader;
+import com.martinrgb.livewallpapertemplate.shaderutil.TextureParameters;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -55,7 +58,7 @@ public class ShaderProgram {
     protected final int programOrig;
     //protected final Buffer vertexBuffer;
 
-    protected ShaderProgram(Context context,String givenVertex,String givenFrag){
+    protected ShaderProgram(Context context, InputStream givenVertex, InputStream givenFrag){
 
         if (VERTEX_BUF == null) {
             VERTEX_BUF = ByteBuffer.allocateDirect(VERTEX_DATA.length * 4)
@@ -84,7 +87,7 @@ public class ShaderProgram {
     //###################Init Input Function###################
 
     final long START_TIME = System.currentTimeMillis();
-    void setupShaderInputs(int program, int[] iResolution, int[] iChannels, float mouseX,float mouseY,float sensorX,float sensorY,float sensorZ,float sensorAccelX,float sensorAccelY,float screenValue,float totalAlpha,float texAlpha,int orientation) {
+    void setupShaderInputs(int program, int[] iResolution, int[] iChannels, float mouseX,float mouseY,float sensorX,float sensorY,float sensorZ,float sensorAccelX,float sensorAccelY,float screenValue,float totalAlpha,float texAlpha,int orientation,float offsetX,float offsetY) {
         GLES20.glUseProgram(program);
 
         int vPositionLocation = GLES20.glGetAttribLocation(program, "a_Position");
@@ -137,7 +140,12 @@ public class ShaderProgram {
         int iOrientationLocation = GLES20.glGetUniformLocation(program,"u_orig_orientation");
         GLES20.glUniform1i(iOrientationLocation,orientation);
 
+
+        int iOffsetLocation = GLES20.glGetUniformLocation(program, "u_offset");
+        GLES20.glUniform2f(iOffsetLocation, offsetX,offsetY);
+
     }
+
 
 
 }

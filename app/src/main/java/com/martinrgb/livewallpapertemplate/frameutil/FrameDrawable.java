@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
+import java.io.InputStream;
+
 
 final public class FrameDrawable {
     private static final String TAG = FrameDrawable.class.getSimpleName();

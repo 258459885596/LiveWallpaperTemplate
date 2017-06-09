@@ -4,8 +4,14 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
+import android.util.Log;
 
 
+import com.martinrgb.livewallpapertemplate.MainActivity;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
@@ -30,28 +36,59 @@ public class Utils {
         }
     }
 
+
     public static Bitmap loadBitmap(String drawableResPath,Context context) {
         Bitmap frameBitmap = null;
         BufferedSource bufferedSource = null;
         try {
-            final InputStream frameInputStream =
 
 
-                    context.getAssets().open(drawableResPath);
-            bufferedSource = Okio.buffer(Okio.source(frameInputStream));
-            byte[] imageBytes = bufferedSource.readByteArray();
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 1;
-            if(isReusableBitmap) {
-                options.inJustDecodeBounds = true;
-                BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
-                options.inJustDecodeBounds = false;
-                addInBitmapOptions(options);
+            if(MainActivity.frameName == null){
+                final InputStream frameInputStream = context.getAssets().open(drawableResPath);
+
+                bufferedSource = Okio.buffer(Okio.source(frameInputStream));
+                byte[] imageBytes = bufferedSource.readByteArray();
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 1;
+                if(isReusableBitmap) {
+                    options.inJustDecodeBounds = true;
+                    BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
+                    options.inJustDecodeBounds = false;
+                    addInBitmapOptions(options);
+                }
+                frameBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
+                if (isReusableBitmap) {
+                    reuseBitmap(frameBitmap);
+                }
             }
-            frameBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
-            if (isReusableBitmap) {
-                reuseBitmap(frameBitmap);
+            else {
+                File imageFile =  new File(MainActivity.framePath, drawableResPath);
+
+                final int readLimit = 16 * 1024;
+                if(imageFile != null){
+                    final InputStream frameInputStream =  new BufferedInputStream(new FileInputStream(imageFile), readLimit);
+
+                    bufferedSource = Okio.buffer(Okio.source(frameInputStream));
+                    byte[] imageBytes = bufferedSource.readByteArray();
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inSampleSize = 1;
+                    if(isReusableBitmap) {
+                        options.inJustDecodeBounds = true;
+                        BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
+                        options.inJustDecodeBounds = false;
+                        addInBitmapOptions(options);
+                    }
+                    frameBitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
+                    if (isReusableBitmap) {
+                        reuseBitmap(frameBitmap);
+                    }
+
+                }
             }
+
+
+
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

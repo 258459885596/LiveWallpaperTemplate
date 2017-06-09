@@ -2,7 +2,7 @@
     <string name="app_name">动态壁纸生成器</string>
     <string name="video_setting">选择视频</string>
     <string name="gif_setting">选择 GIF</string>
-    <string name="vert_setting">选择着色器</string>
-    <string name="frag_setting">选择着色器</string>
+    <string name="vert_setting">选择顶点着色器</string>
+    <string name="frag_setting">选择片段着色器</string>
     <string name="frame_setting">选择序列帧(文件夹)</string>
 </resources>

@@ -7,13 +7,20 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Movie;
+import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.service.wallpaper.WallpaperService;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * thx for https://github.com/songixan/Wallpaper
@@ -21,7 +28,7 @@ import java.io.IOException;
 public class GIFLiveWallpaper extends WallpaperService {
 
     //###################### Setting ######################
-    //private static String GIFNAME = "testgif.gif";
+    private static String LOCAL_GIF = "testgif.gif";
 
     public Engine onCreateEngine() {
         return new GIFWallpaperEngine();
@@ -36,7 +43,7 @@ public class GIFLiveWallpaper extends WallpaperService {
     }
 
 
-    private class GIFWallpaperEngine extends WallpaperService.Engine implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private class GIFWallpaperEngine extends WallpaperService.Engine {
 
         private final int frameDuration = 0;
 
@@ -49,8 +56,6 @@ public class GIFLiveWallpaper extends WallpaperService {
         private int mMovieWidth;
         private int mMovieHeight;
         private float scaleRatio;
-
-        private SharedPreferences mPreferences;
 
         private volatile boolean mIsSurfaceCreated;
 
@@ -68,24 +73,38 @@ public class GIFLiveWallpaper extends WallpaperService {
         public void onDestroy() {
             super.onDestroy();
             handler.removeCallbacks(drawGIF);
-            mPreferences.unregisterOnSharedPreferenceChangeListener(this);
         }
+
+
 
         @Override
         public void onSurfaceCreated(SurfaceHolder holder) {
             super.onSurfaceCreated(holder);
 
+
+
             try {
-                movie = Movie.decodeStream(
-                        getResources().getAssets().open(MainActivity.getGIF()));
+
+                if(MainActivity.gifName == null){
+                    Movie video = Movie.decodeStream(
+                            getResources().getAssets().open(LOCAL_GIF));
+                    movie = video;
+                }
+                else {
+                    File imageFile =  new File(MainActivity.gifPath, MainActivity.gifName);
+                    final int readLimit = 16 * 1024;
+                    if(imageFile != null){
+                        InputStream mInputStream =  new BufferedInputStream(new FileInputStream(imageFile), readLimit);
+                        mInputStream.mark(readLimit);
+                        Movie video = Movie.decodeStream(mInputStream);
+                        movie = video;                        } else {
+                        Log.w(TAG, "GIF image is not available!");
+                    }
+                }
+
             }catch(IOException e){
                 Log.d("GIF", "Could not load asset");
             }
-
-            mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            mPreferences.registerOnSharedPreferenceChangeListener(this);
-
-            mIsSurfaceCreated =true;
         }
 
         @Override
@@ -149,11 +168,6 @@ public class GIFLiveWallpaper extends WallpaperService {
             }
         }
 
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-
-
-        }
     }
 
 

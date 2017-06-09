@@ -11,6 +11,8 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringConfig;
 import com.facebook.rebound.SpringSystem;
 
+import java.io.InputStream;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -25,10 +27,10 @@ public class ShaderRenderer  implements GLSurfaceView.Renderer{
     private static final String TAG = "CanvasRenderer";
     private boolean logOn = true;
 
-    public String mVert;
-    public String mFrag;
+    public InputStream mVert;
+    public InputStream mFrag;
 
-    public ShaderRenderer(Context context,String vert,String frag) {
+    public ShaderRenderer(Context context,InputStream vert,InputStream frag) {
         this.context = context;
         setSpringSystem();
         mVert = vert;
@@ -81,7 +83,7 @@ public class ShaderRenderer  implements GLSurfaceView.Renderer{
                 wallPaperTexture,
                 (float)mSpringTotalAlpha.getCurrentValue(),
                 (float)mSpringTexAlpha.getCurrentValue(),
-                mOrientation
+                mOrientation,myOffsetX,myOffsetY
                 );
 
         if(logOn){
@@ -172,6 +174,14 @@ public class ShaderRenderer  implements GLSurfaceView.Renderer{
         }
 
 
+    }
+
+    private float myOffsetX;
+    private float myOffsetY;
+
+    public void handleOffset(float oX,float oY){
+        myOffsetX = oX;
+        myOffsetY = oY;
     }
 
 
