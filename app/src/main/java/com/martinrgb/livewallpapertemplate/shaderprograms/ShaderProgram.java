@@ -6,10 +6,9 @@ import android.opengl.GLES20;
 
 import com.martinrgb.livewallpapertemplate.MainActivity;
 import com.martinrgb.livewallpapertemplate.R;
-import com.martinrgb.livewallpapertemplate.shaderutil.Constants;
-import com.martinrgb.livewallpapertemplate.shaderutil.ShaderHelper;
-import com.martinrgb.livewallpapertemplate.shaderutil.TextResourceReader;
-import com.martinrgb.livewallpapertemplate.shaderutil.TextureParameters;
+import com.martinrgb.livewallpapertemplate.shaderprograms.shaderutil.Constants;
+import com.martinrgb.livewallpapertemplate.shaderprograms.shaderutil.ShaderHelper;
+import com.martinrgb.livewallpapertemplate.shaderprograms.shaderutil.TextResourceReader;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;

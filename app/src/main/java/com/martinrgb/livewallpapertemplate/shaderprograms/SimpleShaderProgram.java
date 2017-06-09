@@ -3,7 +3,7 @@ package com.martinrgb.livewallpapertemplate.shaderprograms;
 import android.content.Context;
 import android.opengl.GLES20;
 
-import com.martinrgb.livewallpapertemplate.shaderutil.TexRenderBuffer;
+import com.martinrgb.livewallpapertemplate.shaderprograms.shaderutil.TexRenderBuffer;
 
 import java.io.InputStream;
 

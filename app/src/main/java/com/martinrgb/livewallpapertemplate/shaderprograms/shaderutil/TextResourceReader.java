@@ -1,4 +1,4 @@
-package com.martinrgb.livewallpapertemplate.shaderutil;
+package com.martinrgb.livewallpapertemplate.shaderprograms.shaderutil;
 
 import android.content.Context;
 import android.content.res.Resources;

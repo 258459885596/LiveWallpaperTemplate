@@ -1,4 +1,4 @@
-package com.martinrgb.livewallpapertemplate.shaderutil;
+package com.martinrgb.livewallpapertemplate.shaderprograms.shaderutil;
 
 /**
  * Created by MartinRGB on 2017/2/26.
