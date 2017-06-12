@@ -1,8 +1,11 @@
 package com.martinrgb.livewallpapertemplate;
 
 import android.Manifest;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -52,8 +55,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setVideoToWallPaper(View view) {
+
         VideoLiveWallpaper.setToWallPaper(this);
     }
+
 
     public void setGIFToWallPaper(View view) {
         GIFLiveWallpaper.setToWallPaper(this);
@@ -190,45 +195,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putString("mGIFPath",gifPath);
-//        outState.putString("mGIFName",gifName);
-//
-//        outState.putString("mVideoPath",videoPath);
-//        outState.putString("mVideoName",videoName);
-//
-//        outState.putString("mVertPath",vertPath);
-//        outState.putString("mVertName",vertName);
-//        outState.putString("mFragPath",fragPath);
-//        outState.putString("mFragName",fragName);
-//
-//        outState.putString("mFramePath",framePath);
-//        outState.putString("mFrameName",frameName);
-//
-//
-//    }
-//
-//    @Override
-//    public void onRestoreInstanceState(Bundle savedInstanceState) {
-//        super.onRestoreInstanceState(savedInstanceState);
-//
-//        gifPath = savedInstanceState.getString("mGIFPath");
-//        gifName = savedInstanceState.getString("mGIFName");
-//
-//        videoPath = savedInstanceState.getString("mVideoPath");
-//        videoName = savedInstanceState.getString("mVideoName");
-//
-//        vertPath = savedInstanceState.getString("mVertPath");
-//        vertName = savedInstanceState.getString("mVertName");
-//        fragPath = savedInstanceState.getString("mFragPath");
-//        fragName = savedInstanceState.getString("mFragName");
-//
-//        framePath = savedInstanceState.getString("mFramePath");
-//        frameName = savedInstanceState.getString("mFrameName");
-//    }
 
     }

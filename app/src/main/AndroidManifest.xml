@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.martinrgb.livewallpapertemplate.MainActivity">
+        <activity android:name="com.martinrgb.livewallpapertemplate.MainActivity"
+                  android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,6 +25,7 @@
             <!-- 为实时壁纸配置intent-filter -->
             <intent-filter>
                 <action android:name="android.service.wallpaper.WallpaperService" />
+
             </intent-filter>
             <!-- 为实时壁纸配置meta-data -->
             <meta-data
