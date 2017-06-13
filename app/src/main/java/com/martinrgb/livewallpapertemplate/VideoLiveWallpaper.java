@@ -49,7 +49,6 @@ public class VideoLiveWallpaper extends WallpaperService {
         }catch (IOException e) {
             e.printStackTrace();
         }
-
         final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
         intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                 new ComponentName(context, VideoLiveWallpaper.class));
@@ -61,15 +60,13 @@ public class VideoLiveWallpaper extends WallpaperService {
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        context.startActivity(intent);
 
-
-
-
 //        PackageManager packageManager = context.getPackageManager();
 //        List<ResolveInfo> list =  packageManager.queryIntentServices(
 //                                new Intent(WallpaperService.SERVICE_INTERFACE),
 //                                PackageManager.GET_META_DATA);
 //        ResolveInfo resolveInfo = list.get(0);
 //
+//        搬运 SoundTrack 的 RFLX
 //
 //        WallpaperInfo info = null;
 //        try {
@@ -90,16 +87,16 @@ public class VideoLiveWallpaper extends WallpaperService {
     }
 
 
-//    public static void showLiveWallpaperPreview(WallpaperInfo info, Intent intent, Context context) {
-//        if (info == null) return;
-//
-//               Intent preview = new Intent();
-//               preview.setComponent(new ComponentName(WALLPAPER_PREVIEW_PACKAGE, WALLPAPER_PREVIEW_CLASSNAME));
-//               preview.putExtra(EXTRA_LIVE_WALLPAPER_INTENT, intent);
-//               preview.putExtra(EXTRA_LIVE_WALLPAPER_SETTINGS, info.getSettingsActivity());
-//               preview.putExtra(EXTRA_LIVE_WALLPAPER_PACKAGE, info.getPackageName());
-//               context.startActivity(preview);
-//    }
+    public static void showLiveWallpaperPreview(WallpaperInfo info, Intent intent, Context context) {
+        if (info == null) return;
+
+               Intent preview = new Intent();
+               preview.setComponent(new ComponentName(WALLPAPER_PREVIEW_PACKAGE, WALLPAPER_PREVIEW_CLASSNAME));
+               preview.putExtra(EXTRA_LIVE_WALLPAPER_INTENT, intent);
+               preview.putExtra(EXTRA_LIVE_WALLPAPER_SETTINGS, info.getSettingsActivity());
+               preview.putExtra(EXTRA_LIVE_WALLPAPER_PACKAGE, info.getPackageName());
+               context.startActivity(preview);
+    }
 
     class VideoWallpaperEngine extends WallpaperService.Engine {
 
