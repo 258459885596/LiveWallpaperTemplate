@@ -1,8 +1,12 @@
-#ifdef GL_FRAGMENT_PRECISION_HIGH
-precision highp float;
-#else
+#ifdef GL_ES
 precision mediump float;
 #endif
+
+//#ifdef GL_FRAGMENT_PRECISION_HIGH
+//precision highp float;
+//#else
+//precision mediump float;
+//#endif
 
 uniform float u_time;
 uniform vec2 u_resolution;
