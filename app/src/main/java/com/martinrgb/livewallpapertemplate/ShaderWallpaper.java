@@ -30,7 +30,7 @@ public class ShaderWallpaper extends WallpaperService {
 
     //###################### Setting ######################
     private String LOCAL_VERT = "testvert.glsl";
-    private String LOCAL_FRAG = "testfrag_foggy.glsl";
+    private String LOCAL_FRAG = "testfrag_line.glsl";
 
     private InputStream finalVert;
     private InputStream finalFrag;
