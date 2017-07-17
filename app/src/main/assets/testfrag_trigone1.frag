@@ -6,10 +6,13 @@ precision mediump float;
 
 uniform float u_time;
 uniform vec2 u_resolution;
-uniform vec2 u_offset;
+uniform vec2 u_mouse;
 //uniform sampler2D u_backbuffer;
 
 #define M_PI 3.1415926535897932384626433832795
+
+
+
 
 float hash( float n )
 {
@@ -18,32 +21,45 @@ float hash( float n )
 
 void main()
 {
+    
+    
 	float mx = max( u_resolution.x, u_resolution.y );
 	vec2 uv = (gl_FragCoord.xy - u_resolution.xy*0.5)/mx;
-    vec2 uv2 = gl_FragCoord.xy/mx;
-	//uv += uv*0.3;
-	float r = 0.5;
-
-    //rotate
-
+    float r = 0.5 ;
+    
+    
+    //Rotate
 	uv *= mat2(
-	r, -r,
+	r, r ,
 	r, r );
 
-	float y = mx*(uv.x)*0.05 + u_time*2. + hash(uv.x/100000000.);//+ u_time
-	float f = 0.7;
-	//f = (max( 0.4, min( f, 1.0 - f ) ) - 0.4)*10.0;
+    
+    //Single
+    float y;
+    if(mx*uv.x>0.5){
+        
+		y = mx*(uv.x)*1./22.  - u_time*1. - hash(uv.x/100000.)  ;//+ u_time
+    }else{
+        y =  mx*(uv.x)*1./22. - mod(u_time,3.8)*1.;
+    }
+    
+    //Lightness
+	float f = 0.8 ;
+    
 
+    //Section
 	vec3 color =
 		vec3(
-			mod( y + uv.x , 3. )*f,
-			mod( y , 1.)*f/10.,
-			mod( y*10. + uv.x*2., 0.9 )*f )*
-			abs(fract(-uv.x*22.)  );
+			mod( y + uv.x     , 3.8 )*f,   //3. 每一栏目宽度
+			mod( y +uv.x , 0.1)*f,
+			mod( y*8. + uv.x*2., 0.9 )*f )*  //y*3. 条纹
+			abs(fract(-uv.x*22.)  )  ;
+    
 
 
+    //Graident Mapping
     vec3 color2 = vec3(0.07+0.62*uv.x,0.04+0.15*uv.x,0.18+0.09*uv.x);
     color = mix(color,color2,0.7);
-
+    
 	gl_FragColor = vec4( color, 1.0 );
 }
