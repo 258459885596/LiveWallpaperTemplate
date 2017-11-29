@@ -9,6 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name="com.martinrgb.livewallpapertemplate.MainActivity"
+                  android:showOnLockScreen="true"
                   android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +21,7 @@
         <!-- 配置实时壁纸Service -->
         <service
             android:name="com.martinrgb.livewallpapertemplate.VideoLiveWallpaper"
+            android:showOnLockScreen="true"
             android:label="MultiLWP(Video)"
             android:permission="android.permission.BIND_WALLPAPER">
             <!-- 为实时壁纸配置intent-filter -->
@@ -35,6 +37,7 @@
 
         <service
             android:name="com.martinrgb.livewallpapertemplate.GIFLiveWallpaper"
+            android:showOnLockScreen="true"
             android:label="MultiLWP(GIF)"
             android:permission="android.permission.BIND_WALLPAPER">
             <!-- 为实时壁纸配置intent-filter -->
@@ -47,19 +50,28 @@
                 android:resource="@xml/livewallpaper" />
         </service>
 
-        <receiver
-            android:name=".RestarterBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true"
-            android:label="RestartServiceWhenStopped">
-            <intent-filter>
-                <action android:name="com.martinrgb.livewallpapertemplate.Restart"/>
+        <!--<receiver-->
+            <!--android:name=".RestarterBroadcastReceiver"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true"-->
+            <!--android:label="RestartServiceWhenStopped">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.martinrgb.livewallpapertemplate.Restart"/>-->
+            <!--</intent-filter>-->
+        <!--</receiver>-->
+
+        <receiver android:name="com.martinrgb.livewallpapertemplate.MyAdmin" >
+            <meta-data android:name="android.app.device_admin"
+                       android:resource="@xml/my_admin"/>
+            <intent-filter >
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
             </intent-filter>
         </receiver>
 
 
         <service
             android:name="com.martinrgb.livewallpapertemplate.CameraLiveWallpaper"
+            android:showOnLockScreen="true"
             android:label="MultiLWP(Cam)"
             android:permission="android.permission.BIND_WALLPAPER">
             <!-- 为实时壁纸配置intent-filter -->
@@ -74,6 +86,7 @@
 
         <service
             android:name="com.martinrgb.livewallpapertemplate.ShaderWallpaper"
+            android:showOnLockScreen="true"
             android:label="MultiLWP(Shader)"
             android:permission="android.permission.BIND_WALLPAPER">
             <!-- 为实时壁纸配置intent-filter -->
@@ -88,6 +101,7 @@
 
         <service
             android:name="com.martinrgb.livewallpapertemplate.FrameWallpaper"
+            android:showOnLockScreen="true"
             android:label="MultiLWP(Frame)"
             android:permission="android.permission.BIND_WALLPAPER">
             <!-- 为实时壁纸配置intent-filter -->

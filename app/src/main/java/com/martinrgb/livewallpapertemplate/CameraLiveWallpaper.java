@@ -33,6 +33,7 @@ public class CameraLiveWallpaper extends WallpaperService {
         intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                 new ComponentName(context, CameraLiveWallpaper.class));
         intent.putExtra("SET_LOCKSCREEN_WALLPAPER", true);
+
         context.startActivity(intent);
     }
 

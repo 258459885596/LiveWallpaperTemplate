@@ -16,6 +16,7 @@ import android.service.wallpaper.WallpaperService;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.app.WallpaperInfo;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -31,6 +32,8 @@ public class VideoLiveWallpaper extends WallpaperService {
     static final String EXTRA_LIVE_WALLPAPER_INTENT = "android.live_wallpaper.intent";
     static final String EXTRA_LIVE_WALLPAPER_SETTINGS = "android.live_wallpaper.settings";
     static final String EXTRA_LIVE_WALLPAPER_PACKAGE = "android.live_wallpaper.package";
+    public static WallpaperInfo mInfo;
+    public static Intent mIntent;
 
     public Engine onCreateEngine() {
         return new VideoWallpaperEngine();
@@ -46,13 +49,20 @@ public class VideoLiveWallpaper extends WallpaperService {
 
         try {
             WallpaperManager.getInstance(context).clear();
+
         }catch (IOException e) {
             e.printStackTrace();
         }
+
+
+
         final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
         intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
                 new ComponentName(context, VideoLiveWallpaper.class));
+        intent.putExtra("both_wallpaper",true);
         context.startActivity(intent);
+
+
 
 //        Intent intent = new Intent();
 //        intent.setComponent(ComponentName.unflattenFromString("com.android.wallpaper.livepicker/com.android.wallpaper.livepicker.LiveWallpaperPreview"));
@@ -60,13 +70,15 @@ public class VideoLiveWallpaper extends WallpaperService {
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        context.startActivity(intent);
 
+
+        // 锁屏权限！！！
+
 //        PackageManager packageManager = context.getPackageManager();
 //        List<ResolveInfo> list =  packageManager.queryIntentServices(
 //                                new Intent(WallpaperService.SERVICE_INTERFACE),
 //                                PackageManager.GET_META_DATA);
 //        ResolveInfo resolveInfo = list.get(0);
 //
-//        搬运 SoundTrack 的 RFLX
 //
 //        WallpaperInfo info = null;
 //        try {
@@ -151,7 +163,8 @@ public class VideoLiveWallpaper extends WallpaperService {
                     mMediaPlayer.setDataSource(filePath);
                 }
 
-                mMediaPlayer.setLooping(true);
+                //循环
+                //mMediaPlayer.setLooping(true);
                 mMediaPlayer.setVolume(0, 0);
                 mMediaPlayer.prepare();
 //                mMediaPlayer.setVideoScalingMode(MediaPlayer
