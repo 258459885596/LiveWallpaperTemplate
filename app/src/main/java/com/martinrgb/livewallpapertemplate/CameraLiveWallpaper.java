@@ -1,14 +1,20 @@
 package com.martinrgb.livewallpapertemplate;
 
+import android.app.WallpaperInfo;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.service.wallpaper.WallpaperService;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,26 +22,19 @@ import java.util.List;
 public class CameraLiveWallpaper extends WallpaperService {
 
 
+    public static void setToWallPaper(Context context) {
+
+        WallpaperUtil.setToWallPaper(context,
+                "com.martinrgb.livewallpapertemplate.CameraLiveWallpaper",true);
+
+    }
+
+
     @Override
     public Engine onCreateEngine() {
         return new CameraEngine();
     }
 
-    public static void setToWallPaper(Context context) {
-
-        try {
-            WallpaperManager.getInstance(context).clear();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
-        intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
-                new ComponentName(context, CameraLiveWallpaper.class));
-        intent.putExtra("SET_LOCKSCREEN_WALLPAPER", true);
-
-        context.startActivity(intent);
-    }
 
     class CameraEngine extends Engine implements Camera.PreviewCallback {
 

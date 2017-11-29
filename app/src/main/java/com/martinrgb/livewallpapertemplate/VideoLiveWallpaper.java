@@ -27,88 +27,20 @@ public class VideoLiveWallpaper extends WallpaperService {
 
     //###################### Setting ######################
     public String LOCAL_VIDEO = "testvideo.mp4";
-    public static final String WALLPAPER_PREVIEW_PACKAGE = "com.android.wallpaper.livepicker";
-    public static final String WALLPAPER_PREVIEW_CLASSNAME = "com.android.wallpaper.livepicker.LiveWallpaperPreview";
-    static final String EXTRA_LIVE_WALLPAPER_INTENT = "android.live_wallpaper.intent";
-    static final String EXTRA_LIVE_WALLPAPER_SETTINGS = "android.live_wallpaper.settings";
-    static final String EXTRA_LIVE_WALLPAPER_PACKAGE = "android.live_wallpaper.package";
-    public static WallpaperInfo mInfo;
-    public static Intent mIntent;
 
     public Engine onCreateEngine() {
         return new VideoWallpaperEngine();
     }
 
-    public static class LiveWallpaperInfo {
-        public Drawable thumbnail;
-        public WallpaperInfo info;
-        public Intent intent;
-    }
 
     public static void setToWallPaper(Context context) {
 
-        try {
-            WallpaperManager.getInstance(context).clear();
 
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-
-        final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
-        intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
-                new ComponentName(context, VideoLiveWallpaper.class));
-        intent.putExtra("both_wallpaper",true);
-        context.startActivity(intent);
-
-
-
-//        Intent intent = new Intent();
-//        intent.setComponent(ComponentName.unflattenFromString("com.android.wallpaper.livepicker/com.android.wallpaper.livepicker.LiveWallpaperPreview"));
-//        //intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        context.startActivity(intent);
-
-
-        // 锁屏权限！！！
-
-//        PackageManager packageManager = context.getPackageManager();
-//        List<ResolveInfo> list =  packageManager.queryIntentServices(
-//                                new Intent(WallpaperService.SERVICE_INTERFACE),
-//                                PackageManager.GET_META_DATA);
-//        ResolveInfo resolveInfo = list.get(0);
-//
-//
-//        WallpaperInfo info = null;
-//        try {
-//            info = new WallpaperInfo(context, resolveInfo);
-//        } catch (XmlPullParserException e) {
-//            Log.w("LOG", "Skipping wallpaper " + resolveInfo.serviceInfo, e);
-//        } catch (IOException e) {
-//            Log.w("LOG", "Skipping wallpaper " + resolveInfo.serviceInfo, e);
-//        }
-//
-//        LiveWallpaperInfo liveWallpaperInfo = new LiveWallpaperInfo();
-//        liveWallpaperInfo.intent = new Intent(WallpaperService.SERVICE_INTERFACE);
-//        liveWallpaperInfo.intent.setClassName(info.getPackageName(), info.getServiceName());
-//        liveWallpaperInfo.info = info;
-//
-//        showLiveWallpaperPreview(liveWallpaperInfo.info,liveWallpaperInfo.intent,context);
+        WallpaperUtil.setToWallPaper(context,
+                "com.martinrgb.livewallpapertemplate.VideoLiveWallpaper",true);
 
     }
 
-
-    public static void showLiveWallpaperPreview(WallpaperInfo info, Intent intent, Context context) {
-        if (info == null) return;
-
-               Intent preview = new Intent();
-               preview.setComponent(new ComponentName(WALLPAPER_PREVIEW_PACKAGE, WALLPAPER_PREVIEW_CLASSNAME));
-               preview.putExtra(EXTRA_LIVE_WALLPAPER_INTENT, intent);
-               preview.putExtra(EXTRA_LIVE_WALLPAPER_SETTINGS, info.getSettingsActivity());
-               preview.putExtra(EXTRA_LIVE_WALLPAPER_PACKAGE, info.getPackageName());
-               context.startActivity(preview);
-    }
 
     class VideoWallpaperEngine extends WallpaperService.Engine {
 
@@ -138,6 +70,7 @@ public class VideoLiveWallpaper extends WallpaperService {
 
         @Override
         public void onVisibilityChanged(boolean visible) {
+            //否则进入 Home 还 Play
             if (visible) {
                 mMediaPlayer.start();
             } else {

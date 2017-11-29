@@ -1,14 +1,18 @@
 package com.martinrgb.livewallpapertemplate;
 
+import android.app.WallpaperInfo;
 import android.app.WallpaperManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.service.wallpaper.WallpaperService;
 import android.util.Log;
@@ -23,6 +27,8 @@ import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
 import com.martinrgb.livewallpapertemplate.frameutil.FrameDrawable;
 import com.martinrgb.livewallpapertemplate.frameutil.UpdateThread;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +62,14 @@ public class FrameWallpaper extends WallpaperService {
     private int mControlFrame = 0; //可以用Spring，结合滑动位置控制
 
 
+    public static void setToWallPaper(Context context) {
+
+        WallpaperUtil.setToWallPaper(context,
+                "com.martinrgb.livewallpapertemplate.FrameWallpaper",true);
+
+    }
+
+
     //###################### Listener ######################
     private OnFrameListener mOnFrameListener;
     public interface OnFrameListener {
@@ -86,20 +100,6 @@ public class FrameWallpaper extends WallpaperService {
         return new GLEngine();
     }
 
-
-    public static void setToWallPaper(Context context) {
-        try {
-            WallpaperManager.getInstance(context).clear();
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
-        intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
-                new ComponentName(context, FrameWallpaper.class));
-        intent.putExtra("SET_LOCKSCREEN_WALLPAPER", true);
-        context.startActivity(intent);
-    }
 
     public class GLEngine extends Engine{
         private static final String TAG = "GLEngine";
