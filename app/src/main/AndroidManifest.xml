@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
 
+
         <!-- 配置实时壁纸Service -->
         <service
             android:name="com.martinrgb.livewallpapertemplate.VideoLiveWallpaper"

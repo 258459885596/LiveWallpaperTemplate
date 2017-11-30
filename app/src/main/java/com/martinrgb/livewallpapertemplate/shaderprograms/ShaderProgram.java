@@ -3,6 +3,8 @@ package com.martinrgb.livewallpapertemplate.shaderprograms;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.opengl.GLES20;
+import android.os.SystemClock;
+import android.util.Log;
 
 import com.martinrgb.livewallpapertemplate.MainActivity;
 import com.martinrgb.livewallpapertemplate.R;
@@ -85,8 +87,7 @@ public class ShaderProgram {
 
     //###################Init Input Function###################
 
-    final long START_TIME = System.currentTimeMillis();
-    void setupShaderInputs(int program, int[] iResolution, int[] iChannels, float mouseX,float mouseY,float sensorX,float sensorY,float sensorZ,float sensorAccelX,float sensorAccelY,float screenValue,float totalAlpha,float texAlpha,int orientation,float offsetX,float offsetY) {
+    void setupShaderInputs(int program, int[] iResolution, int[] iChannels, float mouseX,float mouseY,float sensorX,float sensorY,float sensorZ,float sensorAccelX,float sensorAccelY,float screenValue,float totalAlpha,float texAlpha,int orientation,float offsetX,float offsetY,float time) {
         GLES20.glUseProgram(program);
 
         int vPositionLocation = GLES20.glGetAttribLocation(program, "a_Position");
@@ -101,7 +102,6 @@ public class ShaderProgram {
         GLES20.glUniform2f(iResolutionLocation,(float) iResolution[0],(float) iResolution[1]);
         //GLES20.glUniform3fv(iResolutionLocation, 1,FloatBuffer.wrap(new float[]{(float) iResolution[0], (float) iResolution[1], 1.0f}));
 
-        float time = ((float) (System.currentTimeMillis() - START_TIME)) / 1000.0f;
         int iGlobalTimeLocation = GLES20.glGetUniformLocation(program, "u_time");
         GLES20.glUniform1f(iGlobalTimeLocation, time);
 

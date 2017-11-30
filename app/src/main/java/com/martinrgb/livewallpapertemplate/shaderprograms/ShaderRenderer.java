@@ -42,6 +42,7 @@ public class ShaderRenderer  implements GLSurfaceView.Renderer{
     public int screenHeight;
     private int wallPaperTexture;
     private int noiseTexture;
+    private long globalStartTime;
     @Override
     public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig){
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -55,6 +56,7 @@ public class ShaderRenderer  implements GLSurfaceView.Renderer{
         //GLES20.glCullFace(GLES20.GL_BACK);
         simpleShaderProgram = new SimpleShaderProgram(context,mVert,mFrag);
         //wallPaperTexture = TextureHelper.loadTexture(context,R.raw.graynoise);
+        globalStartTime = System.nanoTime();
     }
     @Override
     public void onSurfaceChanged(GL10 gl10, int width, int height){
@@ -68,6 +70,7 @@ public class ShaderRenderer  implements GLSurfaceView.Renderer{
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 
 
+        float currentTime = (float) (System.nanoTime() - globalStartTime)/1000000000f;
         //getScreenOnValue(),
 
         //在内部完成了 vertex和tex array的内存分配和指向，以及程序的数据绑定和使用
@@ -83,7 +86,7 @@ public class ShaderRenderer  implements GLSurfaceView.Renderer{
                 wallPaperTexture,
                 (float)mSpringTotalAlpha.getCurrentValue(),
                 (float)mSpringTexAlpha.getCurrentValue(),
-                mOrientation,myOffsetX,myOffsetY
+                mOrientation,myOffsetX,myOffsetY,currentTime
                 );
 
         if(logOn){

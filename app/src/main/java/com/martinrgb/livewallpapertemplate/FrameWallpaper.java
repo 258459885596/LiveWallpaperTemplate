@@ -220,7 +220,6 @@ public class FrameWallpaper extends WallpaperService {
                     float mapValue = (float) SpringUtil.mapValueFromRangeToRange(value, 0, 1, 0, frameNumber);
                     int intMapValue = (int) mapValue;
 
-                    //mFrameAnimationView.drawNext();
                     mControlFrame = intMapValue;
 
 

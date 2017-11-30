@@ -26,7 +26,7 @@ public class SimpleShaderProgram extends ShaderProgram {
     }
 
     //###################Init Input Value & Draw Program###################
-    public void setUniforms(int width, int height, float mouseX, float mouseY, float sensorX, float sensorY, float sensorZ, float sensorAccelX,float sensorAccelY,float screenValue,int textureId,float totalAlpha,float texAlpha,int orientation,float offsetX,float offsetY){
+    public void setUniforms(int width, int height, float mouseX, float mouseY, float sensorX, float sensorY, float sensorZ, float sensorAccelX,float sensorAccelY,float screenValue,int textureId,float totalAlpha,float texAlpha,int orientation,float offsetX,float offsetY,float time){
 
 
 
@@ -35,7 +35,7 @@ public class SimpleShaderProgram extends ShaderProgram {
                 new int[]{textureId},
                 mouseX,mouseY,
                 sensorX,sensorY,sensorZ,sensorAccelX,sensorAccelY,
-                screenValue,totalAlpha,texAlpha,orientation,offsetX,offsetY);
+                screenValue,totalAlpha,texAlpha,orientation,offsetX,offsetY,time);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
     }
 

@@ -43,7 +43,7 @@ public class WallpaperUtil {
             e.printStackTrace();
         }
 
-        if(MIDevice == true){
+        if(DeviceDetectUtil.isMiUi()){
             PackageManager packageManager = context.getPackageManager();
             List<ResolveInfo> list =  packageManager.queryIntentServices(
                     new Intent(WallpaperService.SERVICE_INTERFACE),
@@ -71,7 +71,7 @@ public class WallpaperUtil {
         else{
             final Intent intent = new Intent(WallpaperManager.ACTION_CHANGE_LIVE_WALLPAPER);
             intent.putExtra(WallpaperManager.EXTRA_LIVE_WALLPAPER_COMPONENT,
-                    new ComponentName(context, CameraLiveWallpaper.class));
+                    new ComponentName(context, className));
             intent.putExtra("SET_LOCKSCREEN_WALLPAPER", true);
 
             context.startActivity(intent);

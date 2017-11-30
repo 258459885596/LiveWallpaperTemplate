@@ -82,10 +82,18 @@ public class CameraLiveWallpaper extends WallpaperService {
                     if (mCamera != null) {
 
                         Camera.Parameters parameters = mCamera.getParameters();
-                        List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
-                        Camera.Size previewSize = previewSizes.get(1); //480h x 720w
+                        //List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+                        //Camera.Size previewSize = previewSizes.get(1); //480h x 720w
 
-                        parameters.setPreviewSize(previewSize.width, previewSize.height);
+                        //parameters.setPreviewSize(previewSize.width, previewSize.height);
+
+                        for (Camera.Size previewSize: mCamera.getParameters().getSupportedPreviewSizes())
+                        {
+                            // if the size is suitable for you, use it and exit the loop.
+                            parameters.setPreviewSize(previewSize.width, previewSize.height);
+                            break;
+                        }
+
                         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
 
